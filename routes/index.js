@@ -81,6 +81,23 @@ router.post('/register', function(req, res, next) {
   })
 });
 
+
+router.post('/update', function(req, res, next) {
+  const data = new userModel({
+    username : req.body.username,
+    email : req.body.email,
+    contact : req.body.contact,
+    name : req.body.fullname
+  })
+
+  userModel.register(data, req.body.password)
+  .then(function(){
+    passport.authenticate("local")(req,res, function(){
+      res.redirect("/profile");
+    })
+  })
+});
+
 router.post('/login',passport.authenticate("local",{
   failureRedirect : "/",
   successRedirect : "/profile",
